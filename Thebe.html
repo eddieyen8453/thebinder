@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thebe Example</title>
+
+  <!-- 引入 Thebe 的 CSS 和 JS -->
+  <link rel="stylesheet" href="https://unpkg.com/thebe@latest/lib/index.css">
+  <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
+</head>
+<body>
+  <h1>簡單的 Thebe 範例</h1>
+  <p>以下的 Python 程式碼可以直接在頁面中編輯並執行：</p>
+
+  <!-- 包裹執行區塊的容器 -->
+  <div class="thebe-enabled">
+    <!-- Thebe 會識別有 data-executable 的區塊 -->
+    <pre data-executable="true" data-language="python">
+# 計算兩數的和
+a = 10
+b = 20
+print(f"The sum of a and b is: {a + b}")
+    </pre>
+  </div>
+
+  <!-- Thebe 初始化腳本 -->
+  <script>
+    // 配置 Thebe
+    thebelabConfig = {
+      binderOptions: {
+        repo: "binder-examples/python-simple", // Binder 的範例 repository
+      },
+      kernelOptions: {
+        kernelName: "python3", // 選擇 Python Kernel
+      },
+    };
+
+    // 啟動 Thebe
+    thebelab.bootstrap();
+  </script>
+</body>
+</html>
