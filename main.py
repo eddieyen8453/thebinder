@@ -21,8 +21,12 @@ app.add_middleware(
     allow_headers=["*"],        # 允許的標頭
 )
 
+# GitHub API token 和儲存庫設定
+GITHUB_TOKEN = "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"
+REPO_NAME = "eddieyen8453/thebinder"  # 替換成你的 GitHub 儲存庫
+FILE_PATH = "thebe.ipynb"  # 你要更新的 Notebook 路徑
 
-g = Github(GITHUB_TOKEN)
+g = Github(token_g)
 repo = g.get_repo(REPO_NAME)
 
 class CodeRequest(BaseModel):
