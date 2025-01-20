@@ -1,43 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thebe Example</title>
-
-  <!-- 引入 Thebe 的 CSS 和 JS -->
-  <link rel="stylesheet" href="https://unpkg.com/thebe@latest/lib/index.css">
-  <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Execute Python Code on Binder</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        #codeInput {
+            width: 100%;
+            height: 150px;
+            font-family: monospace;
+            font-size: 16px;
+        }
+        #output {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
 </head>
 <body>
-  <h1>簡單的 Thebe 範例</h1>
-  <p>以下的 Python 程式碼可以直接在頁面中編輯並執行：</p>
 
-  <!-- 包裹執行區塊的容器 -->
-  <div class="thebe-enabled">
-    <!-- Thebe 會識別有 data-executable 的區塊 -->
-    <pre data-executable="true" data-language="python">
-# 計算兩數的和
-a = 10
-b = 20
-print(f"The sum of a and b is: {a + b}")
-    </pre>
-  </div>
+    <h1>Execute Python Code from Frontend using Binder</h1>
 
-  <!-- Thebe 初始化腳本 -->
-  <script>
-    // 配置 Thebe
-    thebelabConfig = {
-      binderOptions: {
-        repo: "binder-examples/python-simple", // Binder 的範例 repository
-      },
-      kernelOptions: {
-        kernelName: "python3", // 選擇 Python Kernel
-      },
-    };
+    <!-- 用戶輸入 Python 代碼 -->
+    <textarea id="codeInput" placeholder="Write your Python code here..."></textarea><br><br>
+    <button id="executeCode">Execute Code</button>
 
-    // 啟動 Thebe
-    thebelab.bootstrap();
-  </script>
+    <h2>Execution Result:</h2>
+    <pre id="output"></pre>
+
+    <script>
+        $(document).ready(function(){
+            $('#executeCode').click(function(){
+                // 取得用戶輸入的代碼
+                var code = $('#codeInput').val();
+
+                // 檢查是否有輸入代碼
+                if (!code.trim()) {
+                    alert("Please enter some Python code.");
+                    return;
+                }
+
+                // 提示用戶正在執行
+                $('#output').text("Executing code, please wait...");
+
+                // 這裡的 URL 是你的 GitHub Repo 在 Binder 上啟動的 URL
+                var binderUrl = "https://mybinder.org/v2/gh/eddieyen8453/thebinder/HEAD";
+
+                // 模擬將代碼發送到後端並執行（可以考慮加入 GitHub API 來動態更新儲存庫）
+                $.ajax({
+                  url: 'http://127.0.0.1:8000/submit_code',  // FastAPI 伺服器路徑
+                  type: 'POST',
+                  contentType: 'application/json',
+                  data: JSON.stringify({ code: code }),  // 請求資料要正確結構
+                  success: function(response) {
+                      $('#output').text("Code submitted successfully! You can now run it on Binder.");
+                      var binderLink = "https://mybinder.org/v2/gh/eddieyen8453/thebinder/main?urlpath=lab/tree/example_notebook.ipynb";
+                      $('#output').append("\n\nClick here to run the notebook: " + binderLink);
+                  },
+                  error: function(xhr, status, error) {
+                      console.log("Error:", status, error);
+                      $('#output').text("An error occurred while submitting the code.");
+                  }
+              });
+            });
+        });
+    </script>
+
 </body>
 </html>
