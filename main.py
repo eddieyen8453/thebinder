@@ -21,10 +21,6 @@ app.add_middleware(
     allow_headers=["*"],        # 允許的標頭
 )
 
-# GitHub 配置
-GITHUB_TOKEN = "****"
-REPO_NAME = "eddieyen8453/thebinder"  # 替換成你的 GitHub 儲存庫
-FILE_PATH = "thebinder/thebe.ipynb"  # 你要更新的 Notebook 路徑
 
 g = Github(GITHUB_TOKEN)
 repo = g.get_repo(REPO_NAME)
