@@ -22,7 +22,7 @@ app.add_middleware(
 )
 
 # GitHub 配置
-GITHUB_TOKEN = "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"
+GITHUB_TOKEN = "****"
 REPO_NAME = "eddieyen8453/thebinder"  # 替換成你的 GitHub 儲存庫
 FILE_PATH = "thebinder/thebe.ipynb"  # 你要更新的 Notebook 路徑
 
